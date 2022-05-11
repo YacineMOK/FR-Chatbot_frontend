@@ -1,21 +1,28 @@
 <template>
-  <q-page class="flex">
+  <q-page class="row justify-center items-center">
 
-<div class="column" style="">
+<div class="column" style="width: 40%">
       <div class="col">
-        <div class="fit row wrap justify-center items-center content-center">
+        <div class="fit row wrap justify-center items-center content-center chat-container">
         
          <!-- <div class="q-pa-md row justify-center"> -->
-          <div v-for="(i,index) in messages" style="width: 60%; max-width: 400px">
-            <q-chat-message v-if=""
-              :text="i"
+          <div  style="width: 60%; max-width: 400px">
+          <div v-for="(i, index) in messages" :key="index">
+
+            <q-chat-message 
+              :text="[i.msg]"
+              v-if="i.user=='Elli'"
               name="Elizia"
             />
             <q-chat-message
-              :text="['yo !']"
+              :text="[i.msg]"
+              v-if="i.user=='User'"
               sent
               name="moi"
             />
+          </div>
+            
+            
           <!-- </div> -->
         </div>
         </div>
@@ -25,16 +32,15 @@
           
 
         <q-form
-              @submit="onSubmit"
-              @reset="onReset"
+              
               class="q-gutter-md"
             >
-            <q-input filled v-model="pinput" label="Dites-moi tout" placeholder="Tapez ici" hint="à vous" :dense="dense" />
+            <q-input ref="inputbox" filled v-model="userQuestion" label="Dites-moi tout" placeholder="Tapez ici" hint="à vous" :dense="dense" :disable="!chatResponse ? 'true' : 'false'" />
               
 
 
               <div>
-                <q-btn label="Submit" type="submit" color="primary"/>
+                <q-btn label="Submit" type="submit" color="primary" @click="loadData"/>
                 <!-- <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" /> -->
               </div>
             </q-form>
@@ -58,20 +64,60 @@
 
 <script>
 import { defineComponent } from 'vue'
+import  api  from 'boot/api'
 
 export default defineComponent({
-  components: {
-   
-  },
+  
   data() {
-    messages: {
-        123: {0:'Hello'}, // user
-        222: {1:'Hi'}, // chatbot
+    return{
 
-      }
+      chatResponse : "",
+      userQuestion: '',
+      messages: [], 
+      
+      
+    }
+    
+  },
+  methods: {
+      
+      loadData () {
+        let objUser = {}; 
+        objUser.timestamp = new Date(); 
+          objUser.user= 'User';
+          objUser.msg= this.userQuestion;
+          this.messages.push(objUser);
+          this.chatResponse = '';
+        api.getResponse({'Question': this.userQuestion}).then(res =>{
+          console.log(this.$refs.inputbox);
+          this.userQuestion = '';
+          console.log(res);
+          this.chatResponse = res.data;
+          let obj = {}; 
+          obj.timestamp = new Date(); 
+          obj.user= 'Elli';
+          obj.msg= res.data.Bot;
+
+          this.messages.push(obj);
+          this.$refs.inputbox.focus();
+        })
+     
   }
-}
+    }
+  }
 )
 
 
 </script>
+
+<style>
+.chat-container{
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+  background: blue;
+}
+</style>
