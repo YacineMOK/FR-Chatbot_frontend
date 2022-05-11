@@ -6,9 +6,9 @@
         <div class="fit row wrap justify-center items-center content-center">
         
          <!-- <div class="q-pa-md row justify-center"> -->
-          <div style="width: 60%; max-width: 400px">
-            <q-chat-message
-              :text="['salut, ça va bien ?']"
+          <div v-for="(i,index) in messages" style="width: 60%; max-width: 400px">
+            <q-chat-message v-if=""
+              :text="i"
               name="Elizia"
             />
             <q-chat-message
@@ -60,8 +60,18 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'IndexPage'
-})
+  components: {
+   
+  },
+  data() {
+    messages: {
+        123: {0:'Hello'}, // user
+        222: {1:'Hi'}, // chatbot
+
+      }
+  }
+}
+)
 
 
 </script>
