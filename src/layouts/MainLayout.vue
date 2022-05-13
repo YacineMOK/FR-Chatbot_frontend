@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar style="background-color: #5DADE2;">
         <!-- <q-btn
           flat
           dense
@@ -11,7 +11,7 @@
           @click="toggleLeftDrawer"
         /> -->
 
-        <q-toolbar-title>
+        <q-toolbar-title style="font-size: 3em;margin-left: 20px; font-family: 'georgia'; color:white; font-weight: bold;">
           Chatbot Elli
         </q-toolbar-title>
 
