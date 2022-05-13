@@ -12,7 +12,7 @@ const API = axios.create({
         console.log(data);
         return API.post('v1/api/chatbot/', data, {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json', 
           },
         });
       },
